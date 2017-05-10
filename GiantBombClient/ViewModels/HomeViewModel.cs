@@ -22,16 +22,6 @@ namespace GiantBombClient.ViewModels
 {
     public class HomeViewModel : NotificationBase
     {
-        //private VideoListModel lastVideoListRequest;
-
-        //private ObservableCollection<VideoModel> videos;
-
-        //public ObservableCollection<VideoModel> Videos
-        //{
-        //    get => videos;
-        //    set => SetProperty(ref videos, value);
-        //}
-
         private ObservableCollection<ShowViewModel> shows;
 
         public ObservableCollection<ShowViewModel> Shows

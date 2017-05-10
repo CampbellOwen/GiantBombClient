@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
@@ -17,7 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GiantBombClient.Models;
-using GiantBombClient.Utilities;
+using GiantBombClient.Utilities.Extensions;
 using GiantBombClient.ViewModels;
 
 namespace GiantBombClient.Views
@@ -49,7 +51,7 @@ namespace GiantBombClient.Views
 
         private void SaveVideoTime(object sender, object e)
         {
-            VideoViewModel.SaveCurrentTime(VideoPlayer.MediaPlayer.PlaybackSession.Position);
+            VideoViewModel.SaveCurrentTime(VideoPlayer.MediaPlayer.PlaybackSession.Position).LogAndContinueOnFaulted();
         }
 
         private async void MediaPlayerOnMediaOpened(MediaPlayer sender, object args)
@@ -77,7 +79,7 @@ namespace GiantBombClient.Views
                 CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    VideoViewModel.SaveCurrentTime(VideoPlayer.MediaPlayer.PlaybackSession.Position);
+                    VideoViewModel.SaveCurrentTime(VideoPlayer.MediaPlayer.PlaybackSession.Position).LogAndContinueOnFaulted();
                     VideoPlayer.MediaPlayer.Dispose();
                 });
         }

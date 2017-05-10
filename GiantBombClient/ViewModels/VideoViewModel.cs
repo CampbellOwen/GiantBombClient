@@ -8,6 +8,7 @@ using Windows.Media.Playback;
 using Windows.Media.PlayTo;
 using GiantBombClient.Models;
 using GiantBombClient.Utilities;
+using GiantBombClient.Utilities.Extensions;
 using GiantBombClient.Utilities.NetworkProviders;
 using GiantBombClient.Utilities.Queries;
 using GiantBombClient.Utilities.Requests;
@@ -22,11 +23,11 @@ namespace GiantBombClient.ViewModels
         public VideoModel CurrentVideo
         {
             get => currentVideo;
-            set
+            set 
             {
                 SetProperty(ref currentVideo, value);
                 VideoSource = CreateMediaPlaybackItemFromVideo(value);
-                GetSavedTime();
+                GetSavedTime().LogAndContinueOnFaulted();
             }
         }
 
@@ -69,11 +70,11 @@ namespace GiantBombClient.ViewModels
             CurrentTime = TimeSpan.FromSeconds(Convert.ToDouble(time?.Time ?? "0"));
         }
 
-        public void SaveCurrentTime(TimeSpan time)
+        public async Task SaveCurrentTime(TimeSpan time)
         {
             var query = new StoreVideoTimeQuery(CurrentVideo.Id, time.TotalSeconds);
             var request = new NetworkRequest<StoreVideoTimeResultModel>(new DefaultNetworkProvider(), query);
-            request.GetResultAsync();
+            await request.GetResultAsync();
         }
     }
 }

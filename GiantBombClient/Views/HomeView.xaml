@@ -25,8 +25,8 @@
         <Pivot
             Grid.Row="0"
             IsHeaderItemsCarouselEnabled="False"
-            SelectedItem="{x:Bind HomeViewModel.CurrentShow, Mode=TwoWay}"
-            ItemsSource="{x:Bind HomeViewModel.Shows, Mode=OneWay}">
+            ItemsSource="{x:Bind HomeViewModel.Shows, Mode=OneWay}"
+            SelectedItem="{x:Bind HomeViewModel.CurrentShow, Mode=TwoWay}">
             <Pivot.HeaderTemplate>
                 <DataTemplate x:DataType="viewModels:ShowViewModel">
                     <TextBlock Text="{x:Bind Show.Title}" />
