@@ -10,17 +10,16 @@ namespace GiantBombClient.Utilities.Extensions
 {
     public static class TaskExtension
     {
-        public static void LogAndContinueOnFaulted(this Task task)
+        public static async void LogAndContinueOnFaulted(this Task task)
         {
-            task.ContinueWith(t =>
+            try
             {
-
-                if (t.IsFaulted)
-                {
-                    Debug.WriteLine("[DEBUG] Save Video Time Failed");
-                }
-
-            });
+                await task;
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("[DEBUG] Task failed, continuing");
+            }
         }
     }
 }
