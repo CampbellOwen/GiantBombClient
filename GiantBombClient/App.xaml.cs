@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,6 +16,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using GiantBombClient.Utilities;
+using GiantBombClient.Views;
 
 namespace GiantBombClient
 {
@@ -66,7 +70,14 @@ namespace GiantBombClient
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    if (!LoginManager.Instance.IsLoggedIn())
+                    {
+                        rootFrame.Navigate(typeof(LoginView), e.Arguments);
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(HomeView), e.Arguments);
+                    }
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
