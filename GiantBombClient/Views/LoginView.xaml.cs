@@ -33,8 +33,7 @@ namespace GiantBombClient.Views
 
         private void TryLogIn(object sender, RoutedEventArgs e)
         {
-            //this.LoadingRing.IsActive = true;
-            LoginViewModel.TryLogIn(this.CodeTextBox.Text);
+            LoginViewModel.TryLogIn();
         }
     }
 }

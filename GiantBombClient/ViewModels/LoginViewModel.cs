@@ -23,6 +23,7 @@ namespace GiantBombClient.ViewModels
         #endregion
 
         #region Properties
+
         public bool IsLoading {
             get => isLoading;
             set => SetProperty(ref isLoading, value);
@@ -50,12 +51,11 @@ namespace GiantBombClient.ViewModels
             IsError = false;
         }
 
-        public void TryLogIn(string code)
+        public void TryLogIn()
         {
-            TextBoxContent = "";
             IsError = false;
             IsLoading = true;
-            LoginManager.Instance.LogIn(code).ContinueWith(
+            LoginManager.Instance.LogIn(TextBoxContent).ContinueWith(
                 async (t) =>
                 {
                     await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
