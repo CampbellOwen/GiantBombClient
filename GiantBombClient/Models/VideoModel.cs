@@ -23,12 +23,27 @@ namespace GiantBombClient.Models
         public string EmbedPlayer { get; set; }
         [JsonProperty("id")]
         public int Id { get; set; }
+
         [JsonProperty("length_seconds")]
-        public int LengthSeconds { get; set; }
+        public int LengthSeconds
+        {
+            get => (int)FormattedLength.TotalSeconds;
+            set => FormattedLength = TimeSpan.FromSeconds(value);
+        }
         [JsonProperty("name")]
         public string Name { get; set; }
+
         [JsonProperty("publish_date")]
-        public string PublishDate { get; set; }
+        public string PublishDate
+        {
+            get => FormattedDate.ToString();
+            set
+            {
+                var unformatted = DateTime.Parse(value);
+                var pacific = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                FormattedDate = TimeZoneInfo.ConvertTime(unformatted, pacific, TimeZoneInfo.Utc);
+            } 
+        }
         [JsonProperty("site_detail_url")]
         public string SiteDetailUrl { get; set; }
         [JsonProperty("url")]
@@ -45,6 +60,10 @@ namespace GiantBombClient.Models
         public IList<VideoCategoryModel> VideoCategories { get; set; }
         [JsonProperty("youtube_id")]
         public object YoutubeId { get; set; }
+
+        public string CategoryDisplay { get; set; }
+        public TimeSpan FormattedLength { get; set; }
+        public DateTimeOffset FormattedDate { get; set; }
     }
 
 }

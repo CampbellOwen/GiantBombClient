@@ -79,15 +79,6 @@ namespace GiantBombClient.Utilities
             return false;
         }
 
-        //private bool TestApiKey()
-        //{
-        //    var query = new VideoListQuery(fieldList:"id", limit:1);
-        //    var videoListRequest = new NetworkRequest<VideoListModel>(new DefaultNetworkProvider(), query);
-        //    var res = videoListRequest.GetResultAsync().Result as VideoListModel;
-
-        //    return res?.Error == "OK";
-        //}
-
         #endregion
     }
 }

@@ -53,6 +53,7 @@ namespace GiantBombClient.ViewModels
         public void TryLogIn(string code)
         {
             TextBoxContent = "";
+            IsError = false;
             IsLoading = true;
             LoginManager.Instance.LogIn(code).ContinueWith(
                 async (t) =>
