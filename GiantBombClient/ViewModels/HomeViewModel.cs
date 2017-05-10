@@ -71,46 +71,48 @@ namespace GiantBombClient.ViewModels
             var categoryRequest = new NetworkRequest<CategoryListModel>(new DefaultNetworkProvider(), categoryQuery);
             var categoryList = await categoryRequest.GetResultAsync() as CategoryListModel;
 
+            showList?.Shows.Add(new VideoShowModel
+            {
+                ApiDetailUrl = string.Empty,
+                Deck = string.Empty,
+                Id = -1,
+                Image = null,
+                Position = -1,
+                SiteDetailUrl = string.Empty,
+                Title = "All Videos"
+            });
+            var filteredCategories =
+                categoryList?.Categories.Where(
+                    category => new int[] { 20, 5, 6, 11, 8, 10 }.Any(id => id == category.Id));
+            if (filteredCategories != null)
+            {
+                foreach (var category in filteredCategories)
+                {
+                    showList?.Shows.Add(new VideoShowModel
+                    {
+                        ApiDetailUrl = category.ApiDetailUrl,
+                        Deck = string.Empty,
+                        Id = category.Id,
+                        Image = null,
+                        IsCategory = true,
+                        Position = -1,
+                        SiteDetailUrl = category.SiteDetailUrl,
+                        Title = category.Name
+                    });
+                }
+            }
+
+            var filteredShows = showList?.Shows.Where(show => new int[] { 2 }.Any(i => i != show.Id)).OrderBy(show => show.Title);
+
+            if (filteredShows == null)
+            {
+                return;
+            }
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
                     Shows.Clear();
-                    showList?.Shows.Add(new VideoShowModel
-                    {
-                        ApiDetailUrl = string.Empty,
-                        Deck = string.Empty,
-                        Id = -1,
-                        Image = null,
-                        Position = -1,
-                        SiteDetailUrl = string.Empty,
-                        Title = "All Videos"
-                    });
-                    var filteredCategories =
-                        categoryList?.Categories.Where(
-                            category => new int[] {20, 5, 6, 11, 8, 10}.Any(id => id == category.Id));
-                    if (filteredCategories != null) {
-                        foreach (var category in filteredCategories)
-                        {
-                            showList?.Shows.Add(new VideoShowModel
-                            {
-                                ApiDetailUrl = category.ApiDetailUrl,
-                                Deck = string.Empty,
-                                Id = category.Id,
-                                Image =  null,
-                                IsCategory = true,
-                                Position = -1,
-                                SiteDetailUrl = category.SiteDetailUrl,
-                                Title = category.Name
-                            });
-                        }
-                    }
-
-                    var filteredShows = showList?.Shows.Where(show => new int[]{2}.Any(i => i != show.Id)).OrderBy(show => show.Title);
-
-                    if (filteredShows == null)
-                    {
-                        return;
-                    }
+                    
 
                     foreach (var show in filteredShows)
                     {
