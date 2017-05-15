@@ -40,7 +40,7 @@ namespace GiantBombClient.ViewModels
                 SetProperty(ref currentShow, value);
                 if (!CurrentShow.IsLoaded)
                 {
-                    CurrentShow.PopulateVideos();
+                    //CurrentShow.PopulateVideos();
                 }
             }
         }

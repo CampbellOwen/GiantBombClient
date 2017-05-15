@@ -30,10 +30,8 @@ namespace GiantBombClient.Views
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             NavigationCacheMode = NavigationCacheMode.Enabled;
             HomeViewModel = new HomeViewModel();
-            this.InitializeComponent();
+            InitializeComponent();
         }
-
-        
 
         public HomeViewModel HomeViewModel { get; set; }
 
@@ -41,7 +39,7 @@ namespace GiantBombClient.Views
         {
             var video = e.ClickedItem as VideoModel;
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
             rootFrame?.Navigate(typeof(VideoView), video);
         }
 

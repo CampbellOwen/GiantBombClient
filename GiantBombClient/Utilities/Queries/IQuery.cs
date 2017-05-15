@@ -9,5 +9,6 @@ namespace GiantBombClient.Utilities.Queries
     public interface IQuery
     {
         Uri Query { get; }
+        
     }
 }

@@ -23,27 +23,12 @@ namespace GiantBombClient.Models
         public string EmbedPlayer { get; set; }
         [JsonProperty("id")]
         public int Id { get; set; }
-
         [JsonProperty("length_seconds")]
-        public int LengthSeconds
-        {
-            get => (int)FormattedLength.TotalSeconds;
-            set => FormattedLength = TimeSpan.FromSeconds(value);
-        }
+        public int LengthSeconds { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
-
         [JsonProperty("publish_date")]
-        public string PublishDate
-        {
-            get => FormattedDate.ToString();
-            set
-            {
-                var unformatted = DateTime.Parse(value);
-                var pacific = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-                FormattedDate = TimeZoneInfo.ConvertTime(unformatted, pacific, TimeZoneInfo.Utc);
-            } 
-        }
+        public string PublishDate { get; set; }
         [JsonProperty("site_detail_url")]
         public string SiteDetailUrl { get; set; }
         [JsonProperty("url")]
@@ -61,9 +46,25 @@ namespace GiantBombClient.Models
         [JsonProperty("youtube_id")]
         public object YoutubeId { get; set; }
 
-        public string CategoryDisplay { get; set; }
-        public TimeSpan FormattedLength { get; set; }
-        public DateTimeOffset FormattedDate { get; set; }
+        public string CategoryDisplay => VideoShow?.Title ?? VideoCategories.FirstOrDefault()?.Name ?? string.Empty;
+
+        public TimeSpan FormattedLength
+        {
+            get => TimeSpan.FromSeconds(LengthSeconds);
+            set => LengthSeconds = (int)value.TotalSeconds;
+        }
+
+        public DateTimeOffset FormattedDate
+        {
+            get
+            {
+                var unformattedTime = DateTime.Parse(PublishDate);
+                var pacific = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                return TimeZoneInfo.ConvertTime(unformattedTime, pacific, TimeZoneInfo.Utc);
+            }
+            set => PublishDate = TimeZoneInfo.ConvertTime(value, TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"))
+                .ToString(@"yyyy\-MM\-dd HH\:mm\:ss");
+        }
     }
 
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using GiantBombClient.Models;
+using GiantBombClient.Utilities;
 using GiantBombClient.Utilities.NetworkProviders;
 using GiantBombClient.Utilities.Queries;
 using GiantBombClient.Utilities.Requests;
@@ -19,8 +20,8 @@ namespace GiantBombClient.ViewModels
 
         public bool IsLoaded { get; private set; }
 
-        private ObservableCollection<VideoModel> videos;
-        public ObservableCollection<VideoModel> Videos
+        private VideoObservableCollection videos;
+        public VideoObservableCollection Videos
         {
             get => videos;
             set => SetProperty(ref videos, value);
@@ -28,9 +29,23 @@ namespace GiantBombClient.ViewModels
 
         public ShowViewModel(VideoShowModel show)
         {
-            Videos = new ObservableCollection<VideoModel>();
             Show = show;
             IsLoaded = false;
+
+            VideoListQuery query;
+            if (Show.IsCategory)
+            {
+                query = new VideoListQuery(filter: string.Format("video_categories:{0}", Show.Id));
+            }
+            else
+            {
+                query = Show.Id > 0
+                    ? new VideoListQuery(filter: string.Format("video_show:{0}", Show.Id))
+                    : new VideoListQuery();
+            }
+
+            Videos = new VideoObservableCollection(int.MaxValue, new LoadMoreQuery{Endpoint = query.Query.AbsoluteUri + "&limit={0}&offset={1}"});
+            
         }
 
         public async void PopulateVideos()
@@ -55,10 +70,10 @@ namespace GiantBombClient.ViewModels
                     this.Videos.Clear();
                     foreach (var video in videos?.Videos ?? new List<VideoModel>())
                     {
-                        video.CategoryDisplay = video.VideoShow?.Title ?? video.VideoCategories.FirstOrDefault()?.Name ?? string.Empty;
                         this.Videos.Add(video);
                     }
                 });
+            
             IsLoaded = true;
         }
     }

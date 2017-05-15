@@ -120,8 +120,10 @@
     <Compile Include="Utilities\LoginManager.cs" />
     <Compile Include="Utilities\NetworkProviders\DefaultNetworkProvider.cs" />
     <Compile Include="Utilities\NetworkProviders\INetworkProvider.cs" />
+    <Compile Include="Utilities\VideoObservableCollection.cs" />
     <Compile Include="Utilities\Queries\IQuery.cs" />
     <Compile Include="Utilities\Queries\CategoryListQuery.cs" />
+    <Compile Include="Utilities\Queries\LoadMoreQuery.cs" />
     <Compile Include="Utilities\Queries\StoreVideoTimeQuery.cs" />
     <Compile Include="Utilities\Queries\SavedVideoTimeQuery.cs" />
     <Compile Include="Utilities\Queries\ShowListQuery.cs" />
