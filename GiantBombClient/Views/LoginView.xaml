@@ -23,10 +23,10 @@
             HorizontalAlignment="Center">
             <TextBlock
                 x:Name="Instructions"
+                x:Uid="LoginInstructions"
                 Padding="0,0,0,10"
                 HorizontalAlignment="Center"
                 FontSize="20"
-                Text="Please log in above and enter the code shown into the box below"
                 TextWrapping="WrapWholeWords" />
             <TextBox
                 x:Name="CodeTextBox"
@@ -49,7 +49,7 @@
                         FontSize="20"
                         Foreground="Firebrick"
                         Text="&#xEB90;" />
-                    <TextBlock Margin="10,0,0,0" Text="Error: Please Try Again" />
+                    <TextBlock x:Uid="ErrorMessage" Margin="10,0,0,0" />
                 </StackPanel>
                 <ProgressRing
                     x:Name="LoadingRing"
@@ -58,9 +58,9 @@
                     IsActive="{x:Bind LoginViewModel.IsLoading, Mode=OneWay}" />
             </Grid>
             <Button
+                x:Uid="SubmitButton"
                 Margin="0,20,0,0"
                 Click="TryLogIn"
-                Content="Submit"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.Below="CodeTextBox" />
         </RelativePanel>

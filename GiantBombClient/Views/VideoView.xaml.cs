@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GiantBombClient.Models;
+using GiantBombClient.Utilities;
 using GiantBombClient.Utilities.Extensions;
 using GiantBombClient.ViewModels;
 
@@ -47,7 +48,31 @@ namespace GiantBombClient.Views
             saveVideoTimeTimer.Tick += SaveVideoTime;
 
             this.VideoPlayer.MediaPlayer.MediaOpened += MediaPlayerOnMediaOpened;
+            VideoPlayer.MediaPlayer.PlaybackSession.PlaybackStateChanged += OnPlaybackStateChanged;
         }
+
+        private async void OnPlaybackStateChanged(MediaPlaybackSession sender, object o)
+        {
+            switch (sender.PlaybackState)
+            {
+                case MediaPlaybackState.Playing:
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal,
+                        () => saveVideoTimeTimer.Start());
+                    break;
+
+                case MediaPlaybackState.None:
+                case MediaPlaybackState.Opening:
+                case MediaPlaybackState.Buffering:
+                case MediaPlaybackState.Paused:
+                default:
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal,
+                        () => saveVideoTimeTimer.Stop());
+                    break;
+            }
+        }
+
 
         private void SaveVideoTime(object sender, object e)
         {
@@ -67,9 +92,10 @@ namespace GiantBombClient.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var video = e.Parameter as VideoModel;
+            var args = e.Parameter as VideoViewArgs;
 
-            VideoViewModel.CurrentVideo = video;
+            VideoViewModel.CurrentQuality = args?.Quality;
+            VideoViewModel.CurrentVideo = args?.Video;
         }
 
         protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)

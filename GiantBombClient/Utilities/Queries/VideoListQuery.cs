@@ -10,11 +10,24 @@ namespace GiantBombClient.Utilities.Queries
     {
         private const string Endpoint = "http://www.giantbomb.com/api/videos/?api_key={0}&format=json&{1}";
         //TODO Use resource file
-        private const string AppName = "UnofficialDesktopClient";
 
         private readonly Dictionary<string, string> attributes;
 
-        public Uri Query => new Uri(string.Format(Endpoint, LoginManager.Instance.ApiKey, string.Join("&", attributes.Where(x => (x.Key != "limit" && x.Key != "offset") || Convert.ToInt32(x.Value) != -1).Select(x => x.Key + "=" + x.Value))));
+        public Uri Query => new Uri(
+            string.Format(
+                Endpoint, 
+                LoginManager.Instance.ApiKey, 
+                string.Join(
+                    "&", 
+                    attributes
+                        .Where(
+                            x => 
+                                (x.Key != "limit" && x.Key != "offset") || Convert.ToInt32(x.Value) != -1
+                            )
+                        .Select(x => x.Key + "=" + x.Value)
+                    )
+                )
+            );
 
         public VideoListQuery(string fieldList=null, int limit=-1, int offset=-1, string sort=null, string filter=null)
         {

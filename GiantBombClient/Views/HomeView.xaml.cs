@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GiantBombClient.Models;
+using GiantBombClient.Utilities;
 using GiantBombClient.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -38,21 +39,20 @@ namespace GiantBombClient.Views
         private void VideoClicked(object sender, ItemClickEventArgs e)
         {
             var video = e.ClickedItem as VideoModel;
+            var quality = (QualityOptions.SelectedItem as ComboBoxItem)?.Name;
 
+            var args = new VideoViewArgs(video, quality);
             var rootFrame = Window.Current.Content as Frame;
-            rootFrame?.Navigate(typeof(VideoView), video);
+            rootFrame?.Navigate(typeof(VideoView), args);
         }
 
         private void CommandBarClicked(object sender, RoutedEventArgs e)
         {
             var button = sender as AppBarButton;
-            if (button == PlaylistToggle)
-            {
-                Playlist.IsPaneOpen = !Playlist.IsPaneOpen;
-            }
-            else if (button == RefreshButton)
+
+            if (button == RefreshButton)
             { 
-                HomeViewModel.CurrentShow.PopulateVideos();
+                HomeViewModel.CurrentShow.Videos.Clear();
             }
         }
     }

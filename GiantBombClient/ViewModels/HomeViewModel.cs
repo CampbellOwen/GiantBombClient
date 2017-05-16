@@ -35,14 +35,7 @@ namespace GiantBombClient.ViewModels
         public ShowViewModel CurrentShow
         {
             get => currentShow;
-            set
-            {
-                SetProperty(ref currentShow, value);
-                if (!CurrentShow.IsLoaded)
-                {
-                    //CurrentShow.PopulateVideos();
-                }
-            }
+            set => SetProperty(ref currentShow, value);
         }
 
         public HomeViewModel()
@@ -73,7 +66,8 @@ namespace GiantBombClient.ViewModels
             });
             var filteredCategories =
                 categoryList?.Categories.Where(
-                    category => new int[] { 20, 5, 6, 11, 8, 10 }.Any(id => id == category.Id));
+                    category => new int[] {20, 5, 6, 11, 8, 10}.Any(id => id == category.Id)
+                );
             if (filteredCategories != null)
             {
                 foreach (var category in filteredCategories)
@@ -102,19 +96,12 @@ namespace GiantBombClient.ViewModels
                 () =>
                 {
                     Shows.Clear();
-                    
-
                     foreach (var show in filteredShows)
                     {
                         Shows.Add(new ShowViewModel(show));
                     }
                     CurrentShow = Shows.FirstOrDefault();
                 });
-            //if (CurrentShow != null)
-            //{
-            //    PopulateVideos();
-            //}
-
         }
     }
 }

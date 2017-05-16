@@ -130,6 +130,7 @@
     <Compile Include="Utilities\Queries\VideoListQuery.cs" />
     <Compile Include="Utilities\Requests\NetworkRequest.cs" />
     <Compile Include="Utilities\Queries\LoginQuery.cs" />
+    <Compile Include="Utilities\VideoViewArgs.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NotificationBase.cs" />
@@ -149,7 +150,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="GiantBombClient_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -194,7 +194,9 @@
       <Version>10.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

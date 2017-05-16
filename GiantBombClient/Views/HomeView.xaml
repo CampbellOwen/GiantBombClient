@@ -99,38 +99,37 @@
             </Pivot.ItemTemplate>
         </Pivot>
         <CommandBar Grid.Row="1" DefaultLabelPosition="Right">
-            <AppBarButton
-                x:Name="PlaylistToggle"
-                Click="CommandBarClicked"
-                Icon="DockLeft"
-                Label="Toggle Playlist" />
             <AppBarSeparator />
             <AppBarButton
                 x:Name="RefreshButton"
+                x:Uid="RefreshButton"
                 Click="CommandBarClicked"
-                Icon="Refresh"
-                Label="Refresh" />
+                Icon="Refresh" />
             <CommandBar.Content>
                 <StackPanel
                     Margin="20,8,0,0"
                     VerticalAlignment="Stretch"
                     Orientation="Horizontal">
-                    <ComboBox VerticalAlignment="Center" SelectedIndex="0">
-                        <ComboBoxItem>
-                            Newest
+                    <ComboBox
+                        x:Name="QualityOptions"
+                        VerticalAlignment="Center"
+                        SelectedIndex="1">
+                        <ComboBoxItem x:Name="Hd">
+                            <TextBlock x:Uid="HdQuality" />
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            Oldest
+                        <ComboBoxItem x:Name="High">
+                            <TextBlock x:Uid="HighQuality" />
+                        </ComboBoxItem>
+                        <ComboBoxItem x:Name="Low">
+                            <TextBlock x:Uid="LowQuality" />
                         </ComboBoxItem>
                     </ComboBox>
-                    <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">Sort By</TextBlock>
-
+                    <TextBlock
+                        x:Uid="QualityTitle"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center" />
                 </StackPanel>
             </CommandBar.Content>
         </CommandBar>
-        <SplitView
-            x:Name="Playlist"
-            Grid.Row="0"
-            DisplayMode="Overlay" />
     </Grid>
 </Page>

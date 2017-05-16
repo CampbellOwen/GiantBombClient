@@ -10,7 +10,7 @@ namespace GiantBombClient.Models
     public class StoreVideoTimeResultModel : IDataModel
     {
         [JsonProperty("success")]
-        public int Success { get; set; }
+        public bool Success { get; set; }
         [JsonProperty("message")]
         public string Message { get; set; }
     }

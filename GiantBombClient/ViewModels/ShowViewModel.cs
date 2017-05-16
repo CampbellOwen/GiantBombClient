@@ -18,8 +18,6 @@ namespace GiantBombClient.ViewModels
     {
         public VideoShowModel Show { get; set; }
 
-        public bool IsLoaded { get; private set; }
-
         private VideoObservableCollection videos;
         public VideoObservableCollection Videos
         {
@@ -30,51 +28,15 @@ namespace GiantBombClient.ViewModels
         public ShowViewModel(VideoShowModel show)
         {
             Show = show;
-            IsLoaded = false;
 
-            VideoListQuery query;
-            if (Show.IsCategory)
-            {
-                query = new VideoListQuery(filter: string.Format("video_categories:{0}", Show.Id));
-            }
-            else
-            {
-                query = Show.Id > 0
-                    ? new VideoListQuery(filter: string.Format("video_show:{0}", Show.Id))
+            var filter = Show.IsCategory ? "video_categories:{0}" : "video_show:{0}";
+
+            var query = Show.Id > 0
+                    ? new VideoListQuery(filter: string.Format(filter, Show.Id))
                     : new VideoListQuery();
-            }
+            
 
             Videos = new VideoObservableCollection(int.MaxValue, new LoadMoreQuery{Endpoint = query.Query.AbsoluteUri + "&limit={0}&offset={1}"});
-            
-        }
-
-        public async void PopulateVideos()
-        {
-            VideoListQuery query;
-            if (Show.IsCategory)
-            {
-                query = new VideoListQuery(filter: string.Format("video_categories:{0}", Show.Id));
-            }
-            else
-            {
-                query = Show.Id > 0
-                    ? new VideoListQuery(filter: string.Format("video_show:{0}", Show.Id))
-                    : new VideoListQuery();
-            }
-            var request = new NetworkRequest<VideoListModel>(new DefaultNetworkProvider(), query);
-            var videos = await request.GetResultAsync() as VideoListModel;
-
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () =>
-                {
-                    this.Videos.Clear();
-                    foreach (var video in videos?.Videos ?? new List<VideoModel>())
-                    {
-                        this.Videos.Add(video);
-                    }
-                });
-            
-            IsLoaded = true;
         }
     }
 }

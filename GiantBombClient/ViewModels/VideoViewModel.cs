@@ -26,10 +26,12 @@ namespace GiantBombClient.ViewModels
             set 
             {
                 SetProperty(ref currentVideo, value);
-                VideoSource = CreateMediaPlaybackItemFromVideo(value);
+                VideoSource = CreateMediaPlaybackItemFromVideo(value, CurrentQuality);
                 GetSavedTime().LogAndContinueOnFaulted();
             }
         }
+
+        public string CurrentQuality { get; set; }
 
         private MediaPlaybackItem videoSource;
         public MediaPlaybackItem VideoSource
@@ -50,10 +52,22 @@ namespace GiantBombClient.ViewModels
             CurrentTime = TimeSpan.Zero;
         }
 
-        private MediaPlaybackItem CreateMediaPlaybackItemFromVideo(VideoModel video)
+        private MediaPlaybackItem CreateMediaPlaybackItemFromVideo(VideoModel video, string quality)
         {
-            var videoUri = new Uri((video?.HdUrl ?? video?.HighUrl ?? video?.LowUrl) + "?api_key=" +
-                                   LoginManager.Instance.ApiKey);
+            string baseUri;
+            switch (quality)
+            {
+                case "Hd":
+                    baseUri = video?.HdUrl ?? video?.HighUrl ?? video?.LowUrl;
+                    break;
+                case "High":
+                    baseUri = video?.HighUrl ?? video?.LowUrl ?? video?.HdUrl;
+                    break;
+                default:
+                    baseUri = video?.LowUrl ?? video?.HighUrl ?? video?.HdUrl;
+                    break;
+            }
+            var videoUri = new Uri(baseUri + "?api_key=" + LoginManager.Instance.ApiKey);
             var mediaSource = MediaSource.CreateFromUri(videoUri);
             var mediaPlaybackItem = new MediaPlaybackItem(mediaSource);
             return mediaPlaybackItem;
